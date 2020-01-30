@@ -84,13 +84,16 @@
     </body>
 	
 	<script>
-		let tables = document.getElementsByTagName("table");
-		tables[0].style.fontSize = "20px";
-		tables[0].style.color = "#e07f7b";
-		tables[0].style.width = "400px"
-		tables[1].style.fontSize = "18px";
-		tables[1].style.color = "#a1b3c9";
-		tables[1].style.width = "300px"
+		if (window.onload)
+		{
+			let tables = document.getElementsByTagName("table");
+			tables[0].style.fontSize = "20px";
+			tables[0].style.color = "#e07f7b";
+			tables[0].style.width = "400px"
+			tables[1].style.fontSize = "18px";
+			tables[1].style.color = "#a1b3c9";
+			tables[1].style.width = "300px";
+		}
 	</script>
     <br />
 </body>
