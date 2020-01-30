@@ -35,6 +35,9 @@ from the new rankings algorithm, explained in the link below.
 
                 var container = d3.select("body")
                     .append("table")
+					.style("fontSize", "20px")
+					.style("color", "#e07f7b")
+					.style("width", "400px")
 
                     .selectAll("tr")
                         .data(parsedCSV).enter()
@@ -56,6 +59,9 @@ from the new rankings algorithm, explained in the link below.
 
                 var container = d3.select("body")
                     .append("table")
+					.style("fontSize", "18px")
+					.style("color", "#a1b3c9")
+					.style("width", "300px")
 
                     .selectAll("tr")
                         .data(parsedCSV).enter()
@@ -92,15 +98,5 @@ from the new rankings algorithm, explained in the link below.
     </body>
 	
     <br />
-	
-	<script>
-		let tables = document.getElementsByTagName("table");
-		tables[0].style.fontSize = "20px";
-		tables[0].style.color = "#e07f7b";
-		tables[0].style.width = "400px"
-		tables[1].style.fontSize = "18px";
-		tables[1].style.color = "#a1b3c9";
-		tables[1].style.width = "300px"
-	</script>
 </body>
 </html>
