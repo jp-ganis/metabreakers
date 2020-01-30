@@ -27,6 +27,10 @@
 
                 var container = d3.select("body")
                     .append("table")
+					.style.fontSize = "20px";
+					.style.color = "#e07f7b";
+					.style.width = "400px"
+					
 
                     .selectAll("tr")
                         .data(parsedCSV).enter()
