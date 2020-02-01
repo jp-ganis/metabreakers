@@ -28,7 +28,7 @@
 	<body>
         <script src="d3.v3.min.js"></script>
         <script type="text/javascript"charset="utf-8">
-            d3.text("FactionData/metabreaker_rankings_top1.csv", function(data) {
+            d3.text("data/metabreaker_rankings_top1.csv", function(data) {
                 var parsedCSV = d3.csv.parseRows(data);
 
                 var container = d3.select("body")
@@ -52,7 +52,7 @@
 	<body>
         <script src="d3.v3.min.js"></script>
         <script type="text/javascript"charset="utf-8">
-            d3.text("FactionData/metabreaker_rankings_top15.csv", function(data) {
+            d3.text("data/metabreaker_rankings_top15.csv", function(data) {
                 var parsedCSV = d3.csv.parseRows(data);
 
                 var container = d3.select("body")
@@ -77,7 +77,7 @@
 	<body>
         <script src="d3.v3.min.js"></script>
         <script type="text/javascript"charset="utf-8">
-            d3.text("FactionData/metabreaker_rankings_16plus.csv", function(data) {
+            d3.text("data/metabreaker_rankings_16plus.csv", function(data) {
                 var parsedCSV = d3.csv.parseRows(data);
 
                 var container = d3.select("body")
