@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+
+    <title>Metabreakers.to</title>
+</head>
+
+<body bgcolor='#35342F' text='#FEF7DB'>
+	<font color="#33F7DB"></font>
+    <div><a type='title' href="index.html" ><font size="6" >Metabreakers.to</font></a></div>
+    <div><a type='title' href="index.html" ><font size="5" >Player Page for %NAME%</font></a></div>
+	
+    <br />
+	Most played faction:
+    <br />
+	Best scoring faction:
+    <br />
+	Best metabreakers faction:
+    <br />
+    <br />
+	
+	<table class='weapon1' type='playerPageTable'>
+		<tr>
+			<td colspan="10">
+				<center><font size="5">Event Scores</font></center>
+			</td>
+		</tr>
+		<tr id='eventRow0' oncontextmenu="populatePlayerData();return false;">
+			<td type='eventName'>
+				%EVENT_NAME%
+			</td>
+			<td type='armyName'>
+				%ARMY_CHOICE%
+			</td>
+			<td type='placing'>
+				%PLACING% out of %NUM_PLAYERS%
+			</td>
+			<td type='score'>
+				%EVENT_SCORE%
+			</td>
+			<td type='metabreakerScore'>
+				%METABREAKERS_SCORE%
+			</td>
+		</tr>
+	</table>
+	
+    <script src="d3.v3.min.js"></script>
+	<script>
+		window.onload = populatePlayerData();
+	
+		function contains(value, searchFor)
+		{
+			return (value || '').indexOf(searchFor) > -1;
+		}
+		
+		function populatePlayerData()
+		{
+			let playerId = getPlayerId();
+		
+            d3.text("data/events.csv", function(data) {
+                let parsed = d3.csv.parseRows(data);
+				let firstRow = false;
+				
+				parsed.forEach( function(d)
+				{
+					if (d[0] == playerId)
+					{
+						if (!firstRow)
+						{
+							firstRow = true;
+							addRow(d, true);
+						}
+						else
+						{
+							addRow(d);
+						}
+					}
+				});
+            });
+		}
+	
+		function getQueryVariable(variable) {
+			var query = window.location.search.substring(1);
+			var vars = query.split('&');
+			for (var i = 0; i < vars.length; i++) {
+				var pair = vars[i].split('=');
+				if (decodeURIComponent(pair[0]) == variable) {
+					return decodeURIComponent(pair[1]);
+				}
+			}
+			console.log('Query variable %s not found', variable);
+		}
+	
+		function getPlayerId()
+		{
+			let s = getQueryVariable("player_id");
+			let no_quotes = s.replace(/['"]+/g, '');
+			return no_quotes;
+		}
+	
+	    function addRow(data, noRowToAdd=false)
+        {
+            let firstRow = document.querySelector('tr[id=eventRow0');
+			let row = firstRow;
+			
+			if (!firstRow)
+			{
+				let cloneRow = firstRow.cloneNode(true);
+				let nextId = parseInt(cloneRow.id.match(/\d+/g), 10 ) + 1;
+				cloneRow.id = 'eventRow'+nextId;
+				
+				row = cloneRow;
+			}
+			
+			let cells = row.getElementsByTagName('td');
+
+			for(var i=0; i < cells.length; i++){
+				if (cells[i].getAttribute('type') == 'armyName')
+				{
+					cells[i].innerHTML = data[1];
+				}
+			}
+			
+            firstRow.parentNode.appendChild(cloneRow);
+        }
+	</script>
+	
+</body>
+</html>
