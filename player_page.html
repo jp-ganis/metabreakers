@@ -12,7 +12,7 @@
 <body bgcolor='#35342F' text='#FEF7DB'>
 	<font color="#33F7DB"></font>
     <div><a type='title' href="index.html" ><font size="6" >Metabreakers.to</font></a></div>
-    <div><a type='title' href="index.html" ><font size="5" >Player Page for %NAME%</font></a></div>
+    <div><a type='title' href="index.html" id="playerNameTitle"><font size="5" >Player Page</font></a></div>
 	
     <br />
 	Most played faction:
@@ -60,6 +60,8 @@
 		function populatePlayerData()
 		{
 			let playerId = getPlayerId();
+			
+			document.getElementById("playerNameTitle").innerHTML = "<font size=\"5\" >Player Page for "+playerId+"</font>";
 		
             d3.text("data/events.csv", function(data) {
                 let parsed = d3.csv.parseRows(data);
@@ -107,7 +109,7 @@
             let firstRow = document.querySelector('tr[id=eventRow0');
 			let row = firstRow;
 			
-			if (!firstRow)
+			if (!noRowToAdd)
 			{
 				let cloneRow = firstRow.cloneNode(true);
 				let nextId = parseInt(cloneRow.id.match(/\d+/g), 10 ) + 1;
@@ -125,7 +127,10 @@
 				}
 			}
 			
-            firstRow.parentNode.appendChild(cloneRow);
+			if (!noRowToAdd)
+			{
+				firstRow.parentNode.appendChild(row);
+			}
         }
 	</script>
 	
