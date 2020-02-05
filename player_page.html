@@ -15,11 +15,19 @@
     <div><a type='title' href="index.html" id="playerNameTitle"><font size="5" >Player Page</font></a></div>
 	
     <br />
-	Most played faction:
+	<font size="4" >Rankings Score:</font> <font color='#33F7DB'><div id="rankings_score" style="display:inline"></div></font>
     <br />
-	Best scoring faction:
+	<font size="4" >Meta-Adjusted Rankings Score:</font> <font color='#33F7DB'><div id="mar_score" style="display:inline"></div></font>
     <br />
-	Best metabreakers faction:
+    <br />
+	<font size="4" >Most Played Faction:</font> <font color='#33F7DB'><div id="most_played_faction" style="display:inline"></div></font>
+    <br />
+	<font size="4" >Best Scoring Faction:</font> <font color='#33F7DB'><div id="best_scoring_faction" style="display:inline"></div></font>
+    <br />
+	<br />
+	<font size="4" >Metabreakers Score:</font> <font color='#33F7DB'><div id="mbrs_score" style="display:inline"></div></font>
+    <br />
+	<font size="4" >Best Metabreakers Faction:</font> <font color='#33F7DB'><div id="best_mbrs_faction" style="display:inline"></div></font>
     <br />
     <br />
 	
@@ -29,7 +37,24 @@
 				<center><font size="5">Event Scores</font></center>
 			</td>
 		</tr>
-		<tr id='eventRow0' oncontextmenu="populatePlayerData();return false;">
+		<tr id='headingRow'>
+			<td type='eventName' width='200px'>
+				<center><font size="5">Event Name</font></center>
+			</td>
+			<td type='armyName' width='200px'>
+				<center><font size="5">Faction</font></center>
+			</td>
+			<td type='placing' width='200px'>
+				<center><font size="5">Placing</font></center>
+			</td>
+			<td type='score' width='200px'>
+				<center><font size="5">Rankings Score</font></center> 
+			</td>
+			<td type='metabreakerScore' width='200px'>
+				<center><font size="5">Metabreaker Score</font></center> 
+			</td>
+		</tr>
+		<tr id='eventRow0'>
 			<td type='eventName'>
 				%EVENT_NAME%
 			</td>
@@ -48,41 +73,44 @@
 		</tr>
 	</table>
 	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="d3.v3.min.js"></script>
 	<script>
 		window.onload = populatePlayerData();
-	
-		function contains(value, searchFor)
-		{
-			return (value || '').indexOf(searchFor) > -1;
-		}
 		
 		function populatePlayerData()
 		{
 			let playerId = getPlayerId();
 			
-			document.getElementById("playerNameTitle").innerHTML = "<font size=\"5\" >Player Page for "+playerId+"</font>";
-		
-            d3.text("data/events.csv", function(data) {
-                let parsed = d3.csv.parseRows(data);
-				let firstRow = false;
+			document.getElementById("playerNameTitle").innerHTML = "<font size=\"5\" >"+playerId+"</font>";
+			
+			$.getJSON("data/player_data.json", function(json) {
+				let data = json[playerId];
+				let firstRow = true;
 				
-				parsed.forEach( function(d)
-				{
-					if (d[0] == playerId)
-					{
-						if (!firstRow)
-						{
-							firstRow = true;
-							addRow(d, true);
-						}
-						else
-						{
-							addRow(d);
-						}
-					}
+				console.log(data)
+				
+				data["events"].forEach( function(d)
+				{ 
+					addRow(d, firstRow);
+					firstRow = false;
 				});
-            });
+				
+				
+				document.getElementById("rankings_score").innerHTML = data["rankings_score"] + " (Rank " + data["rankings_rank"] + ")";
+				document.getElementById("most_played_faction").innerHTML = data["most_played_faction"];
+				document.getElementById("best_scoring_faction").innerHTML = data["best_scoring_faction"];
+				document.getElementById("mar_score").innerHTML =  Math.round(data["meta_adjusted_rankings_score"]).toFixed(0) + " (Rank " +data["meta_adjusted_rankings_rank"] + ")";
+				
+				
+				let mbrsScore = Math.round(data["metabreakers_rankings_score"], 1).toFixed(1);
+				let posNegString = "<font color='grey'>";
+				if (mbrsScore > 0) posNegString = "<font color='#66FF00'>+";				
+				document.getElementById("mbrs_score").innerHTML =  posNegString+mbrsScore+"</font>" + " (Rank " +data["metabreakers_rankings_rank"] + ")";
+				
+				document.getElementById("best_mbrs_faction").innerHTML = data["best_metabreakers_faction"];
+			});
+
 		}
 	
 		function getQueryVariable(variable) {
@@ -95,6 +123,20 @@
 				}
 			}
 			console.log('Query variable %s not found', variable);
+		}
+		function ordinal_suffix_of(i) {
+			var j = i % 10,
+				k = i % 100;
+			if (j == 1 && k != 11) {
+				return i + "st";
+			}
+			if (j == 2 && k != 12) {
+				return i + "nd";
+			}
+			if (j == 3 && k != 13) {
+				return i + "rd";
+			}
+			return i + "th";
 		}
 	
 		function getPlayerId()
@@ -123,7 +165,28 @@
 			for(var i=0; i < cells.length; i++){
 				if (cells[i].getAttribute('type') == 'armyName')
 				{
-					cells[i].innerHTML = data[1];
+					cells[i].innerHTML = data["faction"];
+				}
+				else if (cells[i].getAttribute('type') == 'eventName')
+				{
+					cells[i].innerHTML = data["event_name"];
+				}
+				if (cells[i].getAttribute('type') == 'placing')
+				{
+					let placingString = ordinal_suffix_of(data["placing"])
+					cells[i].innerHTML = placingString + " out of " + data["num_players"];
+				}
+				if (cells[i].getAttribute('type') == 'score')
+				{
+					cells[i].innerHTML = Math.round(data["points"], 1).toFixed(1);
+				}
+				if (cells[i].getAttribute('type') == 'metabreakerScore')
+				{
+					let mbrsScore = Math.round(data["metabreaker_score"], 1).toFixed(1);
+					let posNegString = "<font color='grey'>";
+					if (mbrsScore > 0) posNegString = "<font color='green'>+";
+				
+					cells[i].innerHTML = posNegString+mbrsScore+"</font>";
 				}
 			}
 			
