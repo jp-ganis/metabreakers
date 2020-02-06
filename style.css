@@ -11,6 +11,13 @@ a[type='title']
 	text-decoration: none;
 }
 
+a[type='nochange']
+{
+	font-family: 'Abel', serif;
+	color:inherit;
+	font-size:inherit;
+	text-decoration: none;
+}
 
 a
 {
