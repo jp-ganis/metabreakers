@@ -85,6 +85,8 @@
 		
 		function addRow(playerName, playerScore, playerData, rank)
         {
+			if (playerName == "Player") return;
+		
             let firstRow = document.querySelector('tr[id=eventRow0');
 			let row = firstRow;
 			
