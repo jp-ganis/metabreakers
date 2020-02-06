@@ -121,6 +121,12 @@
 				else if (cells[i].getAttribute('type') == 'faction')
 				{
 					cells[i].innerHTML = playerData['best_metabreakers_faction'];
+					
+					if (playerData['best_metabreakers_faction'] == "UNKNOWN_ARMY")
+					{
+						cells[i].innerHTML = "Miscellaneous";
+					}
+					
 				}
 				else if (cells[i].getAttribute('type') == 'score')
 				{
