@@ -17,8 +17,8 @@
     <br />
 	<font size="4" >Rankings Score:</font> <font color='#33F7DB'><div id="rankings_score" style="display:inline"></div></font>
     <br />
-	<font size="4" >Meta-Adjusted Rankings Score:</font> <font color='#33F7DB'><div id="mar_score" style="display:inline"></div></font>
-    <br />
+	<!-- <font size="4" >Meta-Adjusted Rankings Score:</font> <font color='#33F7DB'><div id="mar_score" style="display:inline"></div></font> -->
+    <!-- <br /> -->
     <br />
 	<font size="4" >Most Played Faction:</font> <font color='#33F7DB'><div id="most_played_faction" style="display:inline"></div></font>
     <br />
@@ -84,7 +84,7 @@
 			
 			document.getElementById("playerNameTitle").innerHTML = "<font size=\"5\" >"+playerId+"</font>";
 			
-			$.getJSON("data/player_data.json", function(json) {
+			$.getJSON("data/uk_events/datahub_player_data.json", function(json) {
 				let data = json[playerId];
 				let firstRow = true;
 				
@@ -97,16 +97,16 @@
 				});
 				
 				
-				document.getElementById("rankings_score").innerHTML = data["rankings_score"] + " (Rank " + data["rankings_rank"] + ")";
+				document.getElementById("rankings_score").innerHTML = Math.round(data["gaussian_score"],1) + " (Rank " + data["gaussian_rank"] + ")";
 				document.getElementById("most_played_faction").innerHTML = data["most_played_faction"];
 				document.getElementById("best_scoring_faction").innerHTML = data["best_scoring_faction"];
-				document.getElementById("mar_score").innerHTML =  Math.round(data["meta_adjusted_rankings_score"]).toFixed(0) + " (Rank " +data["meta_adjusted_rankings_rank"] + ")";
+				<!-- document.getElementById("mar_score").innerHTML =  Math.round(data["meta_adjusted_rankings_score"]).toFixed(0) + " (Rank " +data["meta_adjusted_rankings_rank"] + ")"; -->
 				
 				
-				let mbrsScore = Math.round(data["metabreakers_rankings_score"], 1).toFixed(1);
+				let mbrsScore = Math.round(data["metabreakers_score"]*100, 1).toFixed(1);
 				let posNegString = "<font color='grey'>";
 				if (mbrsScore > 0) posNegString = "<font color='#66FF00'>+";				
-				document.getElementById("mbrs_score").innerHTML =  posNegString+mbrsScore+"</font>" + " (Rank " +data["metabreakers_rankings_rank"] + ")";
+				document.getElementById("mbrs_score").innerHTML =  posNegString+mbrsScore+"</font>" + " (Rank " +data["metabreakers_rank"] + ")";
 				
 				document.getElementById("best_mbrs_faction").innerHTML = data["best_metabreakers_faction"];
 			});
@@ -165,7 +165,8 @@
 			for(var i=0; i < cells.length; i++){
 				if (cells[i].getAttribute('type') == 'armyName')
 				{
-					cells[i].innerHTML = data["faction"];
+					let faction = data["faction"];
+					cells[i].innerHTML = "<a type='nochange' href='faction_page.html?faction_id="+faction+"'>" + faction + "</a>";
 				}
 				else if (cells[i].getAttribute('type') == 'eventName')
 				{
@@ -178,11 +179,11 @@
 				}
 				if (cells[i].getAttribute('type') == 'score')
 				{
-					cells[i].innerHTML = Math.round(data["points"], 1).toFixed(1);
+					cells[i].innerHTML = Math.round(data["gaussian_score"], 1).toFixed(1);
 				}
 				if (cells[i].getAttribute('type') == 'metabreakerScore')
 				{
-					let mbrsScore = Math.round(data["metabreaker_score"], 1).toFixed(1);
+					let mbrsScore = Math.round(data["metabreakers_score"]*100, 1).toFixed(1);
 					let posNegString = "<font color='grey'>";
 					if (mbrsScore > 0) posNegString = "<font color='green'>+";
 				

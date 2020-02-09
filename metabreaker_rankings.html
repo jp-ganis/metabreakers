@@ -69,15 +69,13 @@
 		
 		function populateLadder()
 		{
-			$.getJSON("data/player_data.json", function(player_data) {
-				$.getJSON("data/metabreaker_rankings.json", function(json) {
-					let firstRow = true;
-					let rank = 1;
-					jQuery.each(json, function(k, v)
-					{ 
-						addRow(k, v, player_data[k], rank);
-						rank = rank + 1;
-					});
+			$.getJSON("data/uk_events/datahub_metabreakers_data.json", function(json) {
+				let firstRow = true;
+				let rank = 1;
+				jQuery.each(json, function(k, v)
+				{ 
+					addRow(k, v["metabreakers_score"], v, rank);
+					rank = rank + 1;
 				});
 			});
 		}
@@ -120,7 +118,9 @@
 				}
 				else if (cells[i].getAttribute('type') == 'faction')
 				{
-					cells[i].innerHTML = playerData['best_metabreakers_faction'];
+					let faction = playerData['best_metabreakers_faction'];
+					
+					cells[i].innerHTML = "<a type='nochange' href='faction_page.html?faction_id="+faction+"'>" + faction + "</a>";
 					
 					if (playerData['best_metabreakers_faction'] == "UNKNOWN_ARMY")
 					{
