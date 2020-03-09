@@ -35,6 +35,9 @@
 			<td type='metabreakerScore' width='200px'>
 				<center><font size="5">Score</font></center> 
 			</td>
+			<td type='eventCount' width='200px'>
+				<center><font size="5">Events Played</font></center> 
+			</td>
 		</tr>
 		<tr id='eventRow0'>
 			<td type='rank'>
@@ -45,6 +48,9 @@
 			</td>
 			<td type='score'>
 				%EVENT_SCORE%
+			</td>
+			<td type='eventCount'>
+				%EVENT_COUNT%
 			</td>
 		</tr>
 	</table>
@@ -62,14 +68,14 @@
 				let rank = 1;
 				jQuery.each(json, function(k, v)
 				{ 
-					addRow(k, v["gaussian_score"], rank);
+					addRow(k, v["gaussian_score"], rank, v["events_played"]);
 					rank = rank + 1;
 				});
 			});
 		}
 		
 		
-		function addRow(playerName, playerScore, rank)
+		function addRow(playerName, playerScore, rank, eventCount)
         {
 			if (playerName == "Player" || playerName == "John B" || playerName == "John Bayliss") return;
 		
@@ -108,12 +114,16 @@
 				{
 					cells[i].innerHTML = Math.round(playerScore, 1);
 				}
+				else if (cells[i].getAttribute('type') == 'eventCount')
+				{
+					cells[i].innerHTML = eventCount;
+				}
 				
 				if (rank == 1)
 				{
 					cells[i].innerHTML = "<font size='5' color='#e07f7b'>"+cells[i].innerHTML+"</font>";
 				}
-				else if (rank > 1 && rank <= 16)
+				else if (rank > 1 && rank <= 20)
 				{
 					cells[i].innerHTML = "<font size='4' color='#a1b3c9'>"+cells[i].innerHTML+"</font>";
 				}
