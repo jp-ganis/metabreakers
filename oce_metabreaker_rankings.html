@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+
+    <title>Metabreakers.to</title>
+</head>
+
+<body bgcolor='#35342F' text='#FEF7DB'>
+	<font color="#33F7DB"></font>
+    <div><a type='title' href="index.html" ><font size="6" >Metabreakers.to</font></a></div>
+    <div><a type='title'><font size="5" >Metabreakers</font></a></div>
+	
+    <br />
+	
+	<b>Faction and player pages are broken right now because I have to figure out how to separate the players from different countries. WIP!</b>
+	
+	The score shown here shows amount by which a player is outperforming the average for their faction choices. These are calculated
+	from the new rankings algorithm, explained in the link below. Current season is from 1st Jan 2019 to today.
+	
+	<br />
+	The faction listed is the player's most played faction, which is <i>probably</i> the faction their breaking the meta with. Improvements coming!
+    <br />
+	<p><a href="calculation_explained.html"><i>How do you figure this out?</i></a></p>
+	<p><a href="rankings_system_explained.html"><i>What is the new rankings system?</i></a></p>
+	
+	<table class='weapon1' type='playerPageTable' style='text-align:center'>
+		<tr>
+			<td colspan="10">
+				<center><font size="5">The Metabreakers</font></center>
+			</td>
+		</tr>
+		<tr id='headingRow'>
+			<td type='armyName' width='200px'>
+				<center><font size="5">Rank</font></center>
+			</td>
+			<td type='placing' width='200px'>
+				<center><font size="5">Name</font></center>
+			</td>
+			<td type='score' width='200px'>
+				<center><font size="5">Metabreaker Faction</font></center> 
+			</td>
+			<td type='metabreakerScore' width='200px'>
+				<center><font size="5">Metabreaker Score</font></center> 
+			</td>
+		</tr>
+		<tr id='eventRow0'>
+			<td type='rank'>
+				%EVENT_NAME%
+			</td>
+			<td type='playerName'>
+				%ARMY_CHOICE%
+			</td>
+			<td type='faction'>
+				%PLACING% out of %NUM_PLAYERS%
+			</td>
+			<td type='score'>
+				%EVENT_SCORE%
+			</td>
+		</tr>
+	</table>
+	
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="d3.v3.min.js"></script>
+	<script>
+		window.onload = populateLadder();
+		
+		function populateLadder()
+		{
+			$.getJSON("data/oce_events/datahub_metabreakers_data.json", function(json) {
+				let firstRow = true;
+				let rank = 1;
+				jQuery.each(json, function(k, v)
+				{ 
+					addRow(k, v["metabreakers_score"], v, rank);
+					rank = rank + 1;
+				});
+			});
+		}
+		
+		
+		function addRow(playerName, playerScore, playerData, rank)
+        {
+			if (playerName == "Player") return;
+		
+            let firstRow = document.querySelector('tr[id=eventRow0');
+			let row = firstRow;
+			
+			if (rank > 1)
+			{
+				let cloneRow = firstRow.cloneNode(true);
+				let nextId = parseInt(cloneRow.id.match(/\d+/g), 10 ) + 1;
+				cloneRow.id = 'eventRow'+nextId;
+				
+				row = cloneRow;
+			}
+			
+			let cells = row.getElementsByTagName('td');
+
+			for(var i=0; i < cells.length; i++)
+			{
+				if (cells[i].getAttribute('type') == 'rank')
+				{
+					if (rank == 1)
+					{
+						cells[i].innerHTML = "Underdog Alpha";
+					}
+					else
+					{
+						cells[i].innerHTML = rank;
+					}
+				}
+				else if (cells[i].getAttribute('type') == 'playerName')
+				{
+					cells[i].innerHTML = "<a type='nochange' href='player_page.html?player_id="+playerName+"'>" + playerName + "</a>";
+				}
+				else if (cells[i].getAttribute('type') == 'faction')
+				{
+					let faction = playerData['best_metabreakers_faction'];
+					
+					cells[i].innerHTML = "<a type='nochange' href='faction_page.html?faction_id="+faction+"'>" + faction + "</a>";
+					
+					if (playerData['best_metabreakers_faction'] == "UNKNOWN_ARMY")
+					{
+						cells[i].innerHTML = "Miscellaneous";
+					}
+					
+				}
+				else if (cells[i].getAttribute('type') == 'score')
+				{
+					cells[i].innerHTML = Math.round(playerScore*100, 1);
+				}
+				
+				if (rank == 1)
+				{
+					cells[i].innerHTML = "<font size='5' color='#e07f7b'>"+cells[i].innerHTML+"</font>";
+				}
+				else if (rank > 1 && rank <= 16)
+				{
+					cells[i].innerHTML = "<font size='4' color='#a1b3c9'>"+cells[i].innerHTML+"</font>";
+				}
+			}
+			
+			if (rank > 1)
+			{
+				firstRow.parentNode.appendChild(row);
+			}
+        }
+		
+	</script>
+    <br />
+</body>
+</html>
