@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+
+    <title>Metabreakers.to</title>
+</head>
+
+<body bgcolor='#35342F' text='#FEF7DB'>
+	<font color="#33F7DB"></font>
+    <div><a type='title' href="index.html" ><font size="6" >Metabreakers.to</font></a></div>
+    <div><a type='title' href="index.html" id="playerNameTitle"><font size="5" >Faction Page</font></a></div>
+	
+    <br />
+	<font size="4" >Average Faction Event Score:</font> <font color='#33F7DB'><div id="rankings_score" style="display:inline"></div></font>
+    <br />
+    <br />
+	
+	<table class='weapon1' type='playerPageTable'>
+		<tr>
+			<td colspan="10">
+				<center><font size="5">Event Scores</font></center>
+			</td>
+		</tr>
+		<tr id='headingRow'>
+			<td type='armyName' width='200px'>
+				<center><font size="5">Player Name</font></center>
+			</td>
+			<td type='score' width='200px'>
+				<center><font size="5">Top 3 Events on Faction</font></center> 
+			</td>
+		</tr>
+		<tr id='eventRow0'>
+			<td type='armyName'>
+				%ARMY_CHOICE%
+			</td>
+			<td type='score'>
+				%EVENT_SCORE%
+			</td>
+		</tr>
+	</table>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="d3.v3.min.js"></script>
+	<script>
+		window.onload = populateFactionData();
+		
+		function populateFactionData()
+		{
+			let factionId = getFactionId();
+			
+			document.getElementById("playerNameTitle").innerHTML = "<font size=\"5\" >"+factionId+"</font>";
+			
+			$.getJSON("data/oce_events/datahub_faction_data.json", function(json) {
+				let firstRow = true;
+				let data = json[factionId];
+				document.getElementById("rankings_score").innerHTML = Math.round(data["mean_gaussian_score"],1) + " (Rank " + data["gaussian_rank"] + ")";
+				
+				Object.keys(data["faction_player_scores"]).forEach( function(k, v)
+				{
+					addRow(k, data["faction_player_scores"][k], firstRow);
+					firstRow = false;
+				});
+			});
+
+			$.getJSON("data/uk_events/datahub_faction_data.json", function(json) {
+				
+				
+			});
+		}
+	
+		function getQueryVariable(variable) {
+			var query = window.location.search.substring(1);
+			var vars = query.split('&');
+			for (var i = 0; i < vars.length; i++) {
+				var pair = vars[i].split('=');
+				if (decodeURIComponent(pair[0]) == variable) {
+					return decodeURIComponent(pair[1]);
+				}
+			}
+			console.log('Query variable %s not found', variable);
+		}
+		function ordinal_suffix_of(i) {
+			var j = i % 10,
+				k = i % 100;
+			if (j == 1 && k != 11) {
+				return i + "st";
+			}
+			if (j == 2 && k != 12) {
+				return i + "nd";
+			}
+			if (j == 3 && k != 13) {
+				return i + "rd";
+			}
+			return i + "th";
+		}
+	
+		function getFactionId()
+		{
+			let s = getQueryVariable("faction_id");
+			let no_quotes = s.replace(/['"]+/g, '');
+			return no_quotes;
+		}
+	
+	    function addRow(playerName, playerScore, noRowToAdd=false)
+        {
+            let firstRow = document.querySelector('tr[id=eventRow0');
+			let row = firstRow;
+			
+			if (!noRowToAdd)
+			{
+				let cloneRow = firstRow.cloneNode(true);
+				let nextId = parseInt(cloneRow.id.match(/\d+/g), 10 ) + 1;
+				cloneRow.id = 'eventRow'+nextId;
+				
+				row = cloneRow;
+			}
+			
+			let cells = row.getElementsByTagName('td');
+
+			for(var i=0; i < cells.length; i++){
+				if (cells[i].getAttribute('type') == 'armyName')
+				{
+					cells[i].innerHTML = "<a type='nochange' href='oce_player_page.html?player_id="+playerName+"'>" + playerName + "</a>";
+				}
+				else if (cells[i].getAttribute('type') == 'score')
+				{
+					cells[i].innerHTML = Math.round(playerScore, 1).toFixed(1);
+				}
+			}
+			
+			if (!noRowToAdd)
+			{
+				firstRow.parentNode.appendChild(row);
+			}
+        }
+	</script>
+	
+</body>
+</html>

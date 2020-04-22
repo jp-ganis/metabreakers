@@ -16,11 +16,6 @@
 	
     <br />
 	
-    <br />
-	<font size="5" >Faction and player pages are broken right now because I have to figure out how to separate the players from different countries. WIP! Any questions hit me up on Twitter @jpganis</font>
-    <br />
-	<br />
-	
 	The score shown here shows amount by which a player is outperforming the average for their faction choices. These are calculated
 	from the new rankings algorithm, explained in the link below. Current season is from 1st Jan 2019 to today.
 	
@@ -119,13 +114,13 @@
 				}
 				else if (cells[i].getAttribute('type') == 'playerName')
 				{
-					cells[i].innerHTML = "<a type='nochange' href='player_page.html?player_id="+playerName+"'>" + playerName + "</a>";
+					cells[i].innerHTML = "<a type='nochange' href='oce_player_page.html?player_id="+playerName+"'>" + playerName + "</a>";
 				}
 				else if (cells[i].getAttribute('type') == 'faction')
 				{
 					let faction = playerData['best_metabreakers_faction'];
 					
-					cells[i].innerHTML = "<a type='nochange' href='faction_page.html?faction_id="+faction+"'>" + faction + "</a>";
+					cells[i].innerHTML = "<a type='nochange' href='oce_faction_page.html?faction_id="+faction+"'>" + faction + "</a>";
 					
 					if (playerData['best_metabreakers_faction'] == "UNKNOWN_ARMY")
 					{
