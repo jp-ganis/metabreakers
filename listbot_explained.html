@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+
+    <title>Metabreakers.to</title>
+</head>
+
+<body bgcolor='#35342F' text='#FEF7DB'>
+	<font color="#33F7DB"></font>
+    <div><a type='title' href="index.html" ><font size="6" >Metabreakers.to</a></font></div>
+	
+	<br />
+	<br />
+	<font size="5">
+	TL;DR - Listbot estimates the points cost of a warscroll by identifying key features of that warscroll, and comparing those features to the features of other warscrolls of which the points costs are already known.
+	</font>
+	<br />
+	
+	<br />
+	<font size="4">
+	Listbot breaks a warscroll down into a long list of features, such as basic stats, number of special abilities, how many keywords, the presence of certain specific keywords like <b>Monster</b> or <b>Hero</b>., and many more.
+	
+	<br/>
+	<br/>
+	An example is that Listbot estimates that Tzaangor Skyfires should cost 180 points (90% of their in game points cost). It is comparing Skyfires to all of the other warscrolls it has ever seen, but we can illustrate some of its
+	thinking by looking at the scroll for Tzaangor Enlightened, which has many similar features to the Skyfires scroll. The same base stats (red), some of the same attack profiles (purple), the same amount of special rules (green), 
+	and most of the same keywords (yellow).
+	
+	
+	<img src="enlightened_skyfires.png">
+	</br>
+	</br>
+	
+	When evaluating Sykfires, Listbot knows that Tzaangor Enlightened cost 170 points. It then sees that Skyfires are very similar, except they also have a shooting attack*, which it believes increase their value, and bumps their cost up to the 180 points we discussed above.
+	
+	</br>
+	
+	<font size="2">*This is a guess, we can't <i>exactly</i> tell what Listbot is thinking for its calculations, however in this case I think it's a reasonable assumption.</font>
+	
+	<br/>
+	</br>
+	Overall, the 10 features that Listbot believes <i>best</i> indicate the points cost of a unit are shown below. I.E. these are the features that allow Listbot to most accurately predict the points cost of a warscroll. Note that Listbot
+	only uses the number of special abilities a unit has, as it cannot (yet!) understand what the rules actually do.
+	<br/>
+	<br/>
+	
+	<img src="listbot_features.png">
+	
+	</br>
+	</br>
+	Hopefully this has been a brief helpful explanation of how Listbot calculates points "values" for units in Age of Sigmar. Follow me on Twitter @jpganis for more analysis and Listbot evaluations of all the factions in Age of Sigmar, and if you have any questions I'd love for you to shoot me a message or find me on whatsapp, I'm in lots of the faction chats. Much love, Jp.
+	<br/>
+	<br/>
+</body>
+</html>
