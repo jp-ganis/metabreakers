@@ -52,8 +52,8 @@
 			<td type='score' width='200px'>
 				<center><font size="5">Scroll 2</font></center> 
 			</td>
-			<td type='result' width='200px'>
-				<center><font size="5">Winner</font></center> 
+			<td type='result' width='300px'>
+				<center><font size="5">Winners Brackets</font></center> 
 			</td>
 		</tr>
 		<tr><td/><td/><td/></tr>
@@ -82,13 +82,16 @@
 			let firstRow = true;
 			let idx = 0;
 			
-			<!-- ddd = [{"p1":"John", "p2":"Doe", "winner":"John"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Ddasfoe"},{"p1":"John", "p2":"Doe", "winner":"sadfasdgasdgas"},{"p1":"John", "p2":"Doe", "winner":"Doe"}]; -->
-			
-			<!-- ddd.forEach(function(k, v) -->
-			<!-- { -->
-				<!-- addRow(k, idx); -->
-				<!-- idx = idx + 1; -->
-			<!-- }); -->
+			if (location.hostname === "")
+			{
+				ddd = [{"p1":"John", "p2":"Doe", "winner":"John"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Ddasfoe"},{"p1":"John", "p2":"Doe", "winner":"sadfasdgasdgas"},{"p1":"John", "p2":"Doe", "winner":"Doe"}];
+				
+				ddd.forEach(function(k, v)
+				{
+					addRow(k, idx);
+					idx = idx + 1;
+				});
+			}
 		
 			$.getJSON("data/scrollodrome.json", function(json) {
 				let firstRow = true;
