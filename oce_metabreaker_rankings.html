@@ -67,6 +67,17 @@
 	<script>
 		window.onload = populateLadder();
 		
+		
+			var url = 'https://script.google.com/macros/s/AKfycbxogElt5NlLSCp2mMWuWNkSqu2yHWvzymXn_FgOI6uNcs1r_CCI/exec'
+			var jqxhr = $.ajax({
+				url: url,
+				method: "GET",
+				dataType: "json",
+				data: "{'scroll':palooza, 'value':1}"
+			}).success(
+				console.log("success")
+			);
+		
 		function populateLadder()
 		{
 			$.getJSON("data/oce_events/datahub_metabreakers_data.json", function(json) {
