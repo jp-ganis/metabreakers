@@ -107,21 +107,21 @@
 			for(var i=0; i < cells.length; i++){
 				if (cells[i].getAttribute('type') == 'p1')
 				{
-					cells[i].innerHTML =  "<font color='#e07f7b'>" + fight["p1"] + "</font>";
+					cells[i].innerHTML =  "<color='#e07f7b'>" + fight["p1"] + "</font>";
 				}
 				if (cells[i].getAttribute('type') == 'p2')
 				{
-					cells[i].innerHTML =  "<font color='#a1b3c9'>" + fight["p2"] + "</font>";
+					cells[i].innerHTML =  "<color='#a1b3c9'>" + fight["p2"] + "</font>";
 				}
 				if (cells[i].getAttribute('type') == 'winner')
 				{
-					if (fight["winner"] == fight["p1"])
+					if (i % 2 == 0)
 					{
-						cells[i].innerHTML =  "<font size='4' color='#e07f7b'>" + fight["p1"] + "</font>";
+						cells[i].innerHTML =  "<font size='5' color='#e07f7b'>" + fight["winner"] + "</font>";
 					}
 					else
 					{
-						cells[i].innerHTML =  "<font size='4' color='#a1b3c9'>" + fight["p2"] + "</font>";
+						cells[i].innerHTML =  "<font size='5' color='#a1b3c9'>" + fight["winner"] + "</font>";
 					}
 				}
 			}
