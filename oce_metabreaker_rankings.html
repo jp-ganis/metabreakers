@@ -69,14 +69,16 @@
 		
 		
 			var url = 'https://script.google.com/macros/s/AKfycbxogElt5NlLSCp2mMWuWNkSqu2yHWvzymXn_FgOI6uNcs1r_CCI/exec'
-			var jqxhr = $.ajax({
+
+			$.ajax({
 				url: url,
 				method: "GET",
 				dataType: "json",
-				data: "{'scroll':palooza, 'value':1}"
-			}).success(
-				console.log("success")
-			);
+				data: "{66:'scroll_name'}",
+				success: function (rooms) { 
+					console.log(rooms);
+				}
+			});
 		
 		function populateLadder()
 		{
