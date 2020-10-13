@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+
+    <title>Metabreakers.to</title>
+</head>
+
+<body bgcolor='#35342F' text='#FEF7DB'>
+	<font color="#33F7DB"></font>
+    <div><a type='title' href="index.html" ><font size="6" >Metabreakers.to</font></a></div>
+    <div><a type='title' href="index.html" id="playerNameTitle"><font size="7" color='red'>Welcome, to the Scroll-O-Drome</font></a></div>
+	
+    <br />
+    <br />
+	<font size="5" >Here, all* of the warscrolls from Age of Sigmar are pitted against each other in a battle to the death.</font>
+    <br />
+    <br />
+    <br />
+	<font size="4" > -- There's only one rule - there are no <font size='1'>(special)</font> rules. No Slayer of Kings, no MWs on 6s, no Iron Heart of Khaine - it's just weapon stats v weapon stats.</font>
+    <br />
+    <br />
+	<font size="4" > -- Both units get to shoot, then pile in and attack.</font>
+    <br />
+    <br />
+	<font size="4" > -- Damage is not inflicted until both sides have finished their attacks.</font>
+    <br />
+    <br />
+	<font size="4" > -- Whoever inflicts more unsaved wounds wins the round.</font>
+    <br />
+    <br />
+	<font size="4" > -- Each battle is a best of 7 rounds.</font>
+    <br />
+	<font size="1" > *lots</font>
+    <br />
+    <br />
+	 
+	
+	<table class='weapon1' type='playerPageTable'>
+		<tr>
+			<td colspan="10">
+				<center><font size="5">The Draw</font></center>
+			</td>
+		</tr>
+		<tr id='headingRow'>
+			<td type='armyName' width='200px'>
+				<center><font size="5">Scroll 1</font></center>
+			</td>
+			<td type='score' width='200px'>
+				<center><font size="5">Scroll 2</font></center> 
+			</td>
+			<td type='result' width='200px'>
+				<center><font size="5">Winner</font></center> 
+			</td>
+		</tr>
+		<tr id='eventRow0'>
+			<td type='p1'>
+				%ARMY_CHOICE%
+			</td>
+			<td type='p2'>
+				%EVENT_SCORE%
+			</td>
+			<td type='winner'>
+				%EVENT_SCORE%
+			</td>
+		</tr>
+	</table>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="d3.v3.min.js"></script>
+	<script>
+		window.onload = populateFactionData();
+		
+		function populateFactionData()
+		{
+			$.getJSON("data/scrollodrome.json", function(json) {
+				let firstRow = true;
+				
+				Object.keys(data).forEach( function(k, v)
+				{
+					addRow(k, firstRow);
+					firstRow = false;
+				});
+			});
+		}
+		
+		
+	    function addRow(fight, noRowToAdd)
+        {
+            let firstRow = document.querySelector('tr[id=eventRow0');
+			let row = firstRow;
+			
+			console.log(row)
+			
+			if (!noRowToAdd)
+			{
+				let cloneRow = firstRow.cloneNode(true);
+				let nextId = parseInt(cloneRow.id.match(/\d+/g), 10 ) + 1;
+				cloneRow.id = 'eventRow'+nextId;
+				
+				row = cloneRow;
+			}
+			
+			let cells = row.getElementsByTagName('td');
+
+			for(var i=0; i < cells.length; i++){
+				if (cells[i].getAttribute('type') == 'p1')
+				{
+					cells[i].innerHTML =  fight["p1"];
+				}
+			}
+			
+			if (!noRowToAdd)
+			{
+				firstRow.parentNode.appendChild(row);
+			}
+        }
+	</script>
+	
+</body>
+</html>
