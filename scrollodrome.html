@@ -93,8 +93,6 @@
             let firstRow = document.querySelector('tr[id=eventRow0');
 			let row = firstRow;
 			
-			console.log(row)
-			
 			if (!noRowToAdd)
 			{
 				let cloneRow = firstRow.cloneNode(true);
@@ -110,6 +108,14 @@
 				if (cells[i].getAttribute('type') == 'p1')
 				{
 					cells[i].innerHTML =  fight["p1"];
+				}
+				if (cells[i].getAttribute('type') == 'p2')
+				{
+					cells[i].innerHTML =  fight["p2"];
+				}
+				if (cells[i].getAttribute('type') == 'winner')
+				{
+					cells[i].innerHTML =  fight["winner"];
 				}
 			}
 			
