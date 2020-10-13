@@ -79,7 +79,7 @@
 			$.getJSON("data/scrollodrome.json", function(json) {
 				let firstRow = true;
 				
-				Object.keys(data).forEach( function(k, v)
+				json.forEach( function(k, v)
 				{
 					addRow(k, firstRow);
 					firstRow = false;
