@@ -56,6 +56,9 @@
 				<center><font size="5">Winner</font></center> 
 			</td>
 		</tr>
+		<tr><td/><td/><td/></tr>
+		<tr><td/><td/><td/></tr>
+		<tr><td/><td/><td/></tr>
 		<tr id='eventRow0'>
 			<td type='p1'>
 				%ARMY_CHOICE%
@@ -79,7 +82,7 @@
 			let firstRow = true;
 			let idx = 0;
 			
-			<!-- ddd = [{"p1":"John", "p2":"Doe", "winner":"John"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"}]; -->
+			<!-- ddd = [{"p1":"John", "p2":"Doe", "winner":"John"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Ddasfoe"},{"p1":"John", "p2":"Doe", "winner":"sadfasdgasdgas"},{"p1":"John", "p2":"Doe", "winner":"Doe"}]; -->
 			
 			<!-- ddd.forEach(function(k, v) -->
 			<!-- { -->
@@ -138,9 +141,30 @@
 				}
 			}
 			
+			if (idx % 3 == 2)
+			{
+				for (var j=0;j<3;j++)
+				{
+					let cloneRow = firstRow.cloneNode(true);
+					let nextId = (parseInt(cloneRow.id.match(/\d+/g), 10 ) + 1)*3;
+					cloneRow.id = 'eventRow'+nextId;
+					
+					row = cloneRow;
+					let cells = row.getElementsByTagName('td');
+
+					for(var i=0; i < cells.length; i++){
+						cells[i].innerHTML = "";
+					}
+					
+					firstRow.parentNode.appendChild(cloneRow);
+				}
+			}
+				
 			if (!noRowToAdd)
 			{
+				
 				firstRow.parentNode.appendChild(row);
+				
 			}
         }
 	</script>
