@@ -45,7 +45,7 @@
 	<table class='weapon1' type='playerPageTable'>
 		<tr>
 			<td colspan="10">
-				<center><font size="5">Round 1</font></center>
+				<center><font size="5">Round Draws</font></center>
 			</td>
 		</tr>
 		<tr id='headingRow'>
@@ -56,12 +56,15 @@
 				<center><font size="5">Scroll 2</font></center> 
 			</td>
 			<td type='result' width='300px'>
-				<center><font size="5">Winners Brackets</font></center> 
+				<center><font size="5">R1 Winners</font></center> 
+			</td>
+			<td type='result' width='300px'>
+				<center><font size="5">R2 Winners</font></center> 
 			</td>
 		</tr>
-		<tr><td/><td/><td/></tr>
-		<tr><td/><td/><td/></tr>
-		<tr><td/><td/><td/></tr>
+		<tr><td/><td/><td/><td/></tr>
+		<tr><td/><td/><td/><td/></tr>
+		<tr><td/><td/><td/><td/></tr>
 		<tr id='eventRow0'>
 			<td type='p1'>
 				%ARMY_CHOICE%
@@ -70,6 +73,9 @@
 				%EVENT_SCORE%
 			</td>
 			<td type='winner'>
+				%EVENT_SCORE%
+			</td>
+			<td type='winner2' rowspan="8">
 				%EVENT_SCORE%
 			</td>
 		</tr>
@@ -87,7 +93,8 @@
 			
 			if (location.hostname === "")
 			{
-				ddd = [{"p1":"John", "p2":"Doe", "winner":"John"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Doe"},{"p1":"John", "p2":"Doe", "winner":"Ddasfoe"},{"p1":"John", "p2":"Doe", "winner":"sadfasdgasdgas"},{"p1":"John", "p2":"Doe", "winner":"Doe"}];
+				ddd = [{"p1":"John", "p2":"Doe", "winner":"John", "winner2":"JEREMY<br/>vs<br/>JEREMY"},{"p1":"John", "p2":"Doe", "winner":"John", "winner2":"x"},{"p1":"John", "p2":"Doe", "winner":"John", "winner2":"x"},{"p1":"John", "p2":"Doe", "winner":"John", "winner2":"x"},{"p1":"John", "p2":"Doe", "winner":"John", "winner2":"JEREMY2"},{"p1":"John", "p2":"Doe", "winner":"John", "winner2":"JEREMY"},{"p1":"John", "p2":"Doe", "winner":"John", "winner2":"JEREMY"},{"p1":"John", "p2":"Doe", "winner":"John", "winner2":"JEREMY"},{"p1":"John", "p2":"Doe", "winner":"John", "winner2":"JEREMY"},{"p1":"John", "p2":"Doe", "winner":"John", "winner2":"JEREMY"}];
+
 				
 				ddd.forEach(function(k, v)
 				{
@@ -96,7 +103,7 @@
 				});
 			}
 		
-			$.getJSON("data/scrollodrome.json", function(json) {
+			$.getJSON("data/scrollodrome2.json", function(json) {
 				let firstRow = true;
 				
 				json.forEach( function(k, v)
@@ -105,6 +112,7 @@
 					idx = idx + 1;
 				});
 			});
+			
 		}
 		
 		
@@ -112,11 +120,21 @@
         {
             let firstRow = document.querySelector('tr[id=eventRow0');
 			let row = firstRow;
-			let noRowToAdd = idx == 0
+			let noRowToAdd = idx == 0;
+			
+			let nextId = 0;
+			
+			let shortRow = "<tr id='eventRow0'><td type='p1'>%ARMY_CHOICE%</td><td type='p2'>%EVENT_SCORE%</td><td type='winner'>%EVENT_SCORE%</td></tr>"
 			
 			if (!noRowToAdd)
 			{
 				let cloneRow = firstRow.cloneNode(true);
+				
+				if (idx % 4 > 0)
+				{
+					cloneRow.innerHTML = shortRow;
+				}
+				
 				let nextId = parseInt(cloneRow.id.match(/\d+/g), 10 ) + 1;
 				cloneRow.id = 'eventRow'+nextId;
 				
@@ -131,6 +149,7 @@
 			}
 			
 			let cells = row.getElementsByTagName('td');
+			let bigcell = true;
 
 			for(var i=0; i < cells.length; i++){
 				if (cells[i].getAttribute('type') == 'p1')
@@ -151,12 +170,15 @@
 					{
 						cells[i].innerHTML =  "<font size='5' color='#a1b3c9'>" + fight["winner"] + "</font>";
 					}
+				}				
+				if (cells[i].getAttribute('type') == 'winner2')
+				{
+					cells[i].innerHTML =  "<font size='5' color='#e07f7b'>" + fight["winner2"] + "</font>";
 				}
 			}
 				
 			if (!noRowToAdd)
 			{
-				
 				firstRow.parentNode.appendChild(row);
 				
 			}
