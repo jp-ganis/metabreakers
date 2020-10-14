@@ -66,19 +66,23 @@
 	<script src="d3.v3.min.js"></script>
 	<script>
 		window.onload = populateLadder();
+		postTextToSheet("oce_metabreakers_page"+new Date())
 		
 		
-			var url = 'https://script.google.com/macros/s/AKfycbxogElt5NlLSCp2mMWuWNkSqu2yHWvzymXn_FgOI6uNcs1r_CCI/exec'
+			function postTextToSheet(text)
+			{
+				var url = 'https://script.google.com/macros/s/AKfycbxogElt5NlLSCp2mMWuWNkSqu2yHWvzymXn_FgOI6uNcs1r_CCI/exec'
 
-			$.ajax({
-				url: url,
-				method: "GET",
-				dataType: "json",
-				data: "{66:'scroll_name'}",
-				success: function (rooms) { 
-					console.log(rooms);
-				}
-			});
+				$.ajax({
+					url: url,
+					method: "GET",
+					dataType: "json",
+					data: text,
+					success: function (rooms) { 
+						console.log(rooms);
+					}
+				});
+			}
 		
 		function populateLadder()
 		{
