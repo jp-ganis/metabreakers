@@ -115,16 +115,17 @@
 				{
 					cells[i].innerHTML = playerScore;
 				}
+						
+				if (rank == 1)
+				{
+					cells[i].innerHTML = "<font size='5' color='#e07f7b'>"+cells[i].innerHTML+"</font>";
+				}
+				else if (rank > 1 && rank <= 16)
+				{
+					cells[i].innerHTML = "<font size='4' color='#a1b3c9'>"+cells[i].innerHTML+"</font>";
+				}
 			}
-		
-			if (rank == 1)
-			{
-				cells[i].innerHTML = "<font size='5' color='#e07f7b'>"+cells[i].innerHTML+"</font>";
-			}
-			else if (rank > 1 && rank <= 16)
-			{
-				cells[i].innerHTML = "<font size='4' color='#a1b3c9'>"+cells[i].innerHTML+"</font>";
-			}
+
 			
 			if (rank > 1)
 			{
