@@ -178,6 +178,8 @@
 		
 		function addAchievement(k, v)
 		{
+			if (k == "total_score") { return; }
+			
 			var achievement_table = document.getElementById("achievement_table");
 			var achievement_entry ='<tr><td><div class="container"><img src="achievements/%id%_incomplete.png"><div class="centered">%event_and_date%</div></div></td></tr>';
 			achievement_entry = achievement_entry.replace("%event_and_date%", v["event_and_date"]);
