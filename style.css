@@ -229,3 +229,32 @@ div[type='rerollsBlock']
 	text-align: center;
 	width: 888px;
 }
+
+
+/* FONT AND ACHIEVEMENT STUFF*/
+@font-face {
+	font-family: 'FrizQuadrataRegular';
+	src: url('./FrizQuadrataRegular.eot');
+	src: local('FrizQuadrataRegular'), url('./FrizQuadrataRegular.woff') format('woff'), url('./FrizQuadrataRegular.ttf') format('truetype');
+}
+/* use this class to attach this font to any element i.e. <p class="fontsforweb_fontid_12912">Text with this font applied</p> */
+.fontsforweb_fontid_12912 {
+	font-family: 'FrizQuadrataRegular' !important;
+}
+/* Container holding the image and the text */
+.container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+/* Centered text */
+.centered {
+  font-family: FrizQuadrataRegular;
+  font-size: 9px;
+  opacity: 0.65;
+  position: absolute;
+  top: 79%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
