@@ -156,7 +156,8 @@
 			}
 			else
 			{
-				var json = require("data/achievement_data.json");
+				var json = null;
+				$.getJSON("data/achievement_data.json", function(file_data) { json = file_data; } );
 				achievement_data = json[playerId];
 			}
 			
