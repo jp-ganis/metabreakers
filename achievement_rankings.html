@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+
+    <title>Metabreakers.to</title>
+</head>
+
+<body bgcolor='#35342F' text='#FEF7DB'>
+	<font color="#33F7DB"></font>
+    <div><a type='title' href="index.html" ><font size="6" >Metabreakers.to</font></a></div>
+    <div><a type='title'><font size="5" >Achievements</font></a></div>
+	
+    <br />
+	
+	THIS IS A WORK IN PROGRESS PAGE, BUT YOU CAN CTRL-F FOR YOUR NAME AND CLICK IT AND SEE IF YOU HAVE ANY ACHIEVEMENTS FROM TOURNAMENTS
+	PLAYED AT AN EVENT RECORDED ON TTO.
+
+	<br />
+	<br />
+
+	<table class='weapon1' type='playerPageTable' style='text-align:center'>
+		<tr>
+			<td colspan="10">
+				<center><font size="5">People From TTO Events</font></center>
+			</td>
+		</tr>
+		<tr id='headingRow'>
+			<td type='placing' width='200px'>
+				<center><font size="5">Name</font></center>
+			</td>
+		</tr>
+		<tr id='eventRow0'>
+			<td type='playerName'>
+				%ARMY_CHOICE%
+			</td>
+		</tr>
+	</table>
+	
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="d3.v3.min.js"></script>
+	<script>
+		window.onload = populateLadder();
+		
+		function populateLadder()
+		{
+			$.getJSON("data/achievement_data.json", function(json) {
+				let firstRow = true;
+				let rank = 1;
+				jQuery.each(json, function(k, v)
+				{ 
+					addRow(k, v["metabreakers_score"], v, rank);
+					rank = rank + 1;
+				});
+			});
+		}
+		
+		
+		function addRow(playerName, playerScore, playerData, rank)
+        {
+			if (playerName == "Player") return;
+		
+            let firstRow = document.querySelector('tr[id=eventRow0');
+			let row = firstRow;
+			
+			if (rank > 1)
+			{
+				let cloneRow = firstRow.cloneNode(true);
+				let nextId = parseInt(cloneRow.id.match(/\d+/g), 10 ) + 1;
+				cloneRow.id = 'eventRow'+nextId;
+				
+				row = cloneRow;
+			}
+			
+			let cells = row.getElementsByTagName('td');
+
+			for(var i=0; i < cells.length; i++)
+			{
+				if (cells[i].getAttribute('type') == 'rank')
+				{
+					if (rank == 1)
+					{
+						cells[i].innerHTML = "Underdog Alpha";
+					}
+					else
+					{
+						cells[i].innerHTML = rank;
+					}
+				}
+				else if (cells[i].getAttribute('type') == 'playerName')
+				{
+					cells[i].innerHTML = "<a type='nochange' href='player_page.html?player_id="+playerName+"'>" + playerName + "</a>";
+				}
+			}
+			
+			if (rank > 1)
+			{
+				firstRow.parentNode.appendChild(row);
+			}
+        }
+		
+	</script>
+    <br />
+</body>
+</html>
