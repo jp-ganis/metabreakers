@@ -89,6 +89,26 @@
 		</tr>
 	</table>
 	
+	<div class="form-popup" id="myForm">
+		<form action="javascript:;" onsubmit="submitForm(this)"" class="form-container">
+			<h1>Achievement Request</h1>
+			<div id="form_player_name">Player Name: </br>Achievement ID: </div>
+			<br/>
+
+			<label for="event_name"><b>Event Name</b></label>
+			<input id="form_event_name" type="text" placeholder="Event Name" name="input_event_name" required>
+			
+			<label for="event_year"><b>Event Year</b></label>
+			<input id="form_event_year" type="text" placeholder="Event Year" name="input_event_year" required>
+
+			<label for="opponent_name"><b>Opponent Name</b></label>
+			<input id="form_opponent_name" type="text" placeholder="Opponent Name (if relevant)" name="input_opponent_name">
+
+			<button type="submit" class="btn">Submit</button>
+			<button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+		</form>
+	</div>
+	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="d3.v3.min.js"></script>
 	<script>
@@ -96,7 +116,7 @@
 		
 		function populatePlayerData()
 		{
-			let playerId = getPlayerId();
+			var playerId = getPlayerId();
 			
 			document.getElementById("playerNameTitle").innerHTML = "<font size=\"5\" >"+playerId+"</font>";
 
@@ -243,19 +263,69 @@
 			var rarity_pct = Math.round(rarity*100 / 3000);
 			if (rarity <= 0) rarity_pct = "<1";
 			
+			button_html = '<button class="btn" onclick="onAchievementButtonClicked(&quot;%k%&quot;)">I\'ve completed this!</button>';
+			button_html = button_html.replace("%k%", k);
+			
 			var achievement_table = document.getElementById("achievement_table");
-			var achievement_entry =`<tr><td><div class="container" title='Achieved by ${rarity_pct}% of players'><img src='achievements/%id%_incomplete.png'><div class='centered'>%event_and_date%</div></div></td></tr>`;
+			var achievement_entry ='<tr><td><div class="container" title="Achieved by %rarity_pct%% of players"><img src="achievements/%id%_incomplete.png">%button_class%<div class="centered">%event_and_date%</div></div></td></tr>';
 			achievement_entry = achievement_entry.replace("%event_and_date%", v["event_and_date"]);
 			achievement_entry = achievement_entry.replace("%id%", k);
+			achievement_entry = achievement_entry.replace("%rarity_pct%", rarity_pct.toString());
+			achievement_entry = achievement_entry.replace("%button_class%", button_html);
 			
 			if (v["event_and_date"] != "")
 			{
 				achievement_entry = achievement_entry.replace("_incomplete", "");
+				achievement_entry = achievement_entry.replace(button_html, "")
 			}
 			
 			var entryNode = document.createElement('tr');
 			entryNode.innerHTML = achievement_entry;
 			achievement_table.appendChild(entryNode); 
+		}
+		
+		function onAchievementButtonClicked(achi_id)
+		{
+			openForm(achi_id);
+		}
+		
+		function openForm(achi_id)
+		{
+		  var field_string = '<div id="form_player_name">Player Name: %player_name%</br>Achievement ID: %id%</div>';
+		  field_string = field_string.replace("%player_name%", getPlayerId());
+		  field_string = field_string.replace("%id%", achi_id);
+		  
+		  document.getElementById("form_player_name").innerHTML = field_string;
+		  document.getElementById("myForm").style.display = "block";
+		}
+
+		function closeForm() {
+		  document.getElementById("myForm").style.display = "none";
+		}
+		
+		function submitForm(sender)
+		{
+			var url = 'https://script.google.com/macros/s/AKfycbxogElt5NlLSCp2mMWuWNkSqu2yHWvzymXn_FgOI6uNcs1r_CCI/exec'
+			closeForm();
+			
+			var player_name = getPlayerId();
+			var achi_string = document.getElementById('form_player_name').innerHTML;
+			var event_name = document.getElementById('form_event_name').value;
+			var event_year = document.getElementById('form_event_year').value;
+			var opponent_name = document.getElementById('form_opponent_name').value;
+
+			var outstring = {"ASTRING":achi_string, "EVENT_NAME":event_name, "EVENT_YEAR":event_year, "OPPONENT_NAME":opponent_name, "SUBMISSION_DATE":new Date()};
+			console.log(outstring);
+
+			$.ajax({
+				url: url,
+				method: "GET",
+				dataType: "json",
+				data: outstring,
+				success: function (rooms) { 
+					console.log(rooms);
+				}
+			});
 		}
 	</script>
 	
