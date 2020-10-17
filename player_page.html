@@ -270,8 +270,17 @@
 			var achievement_entry ='<tr><td><div class="container" title="Achieved by %rarity_pct%% of players"><img src="achievements/%id%_incomplete.png">%button_class%<div class="centered">%event_and_date%</div></div></td></tr>';
 			achievement_entry = achievement_entry.replace("%event_and_date%", v["event_and_date"]);
 			achievement_entry = achievement_entry.replace("%id%", k);
-			achievement_entry = achievement_entry.replace("%rarity_pct%", rarity_pct.toString());
 			achievement_entry = achievement_entry.replace("%button_class%", button_html);
+			
+			
+			if (rarity < 20 && v["event_and_date"] != "") 
+			{
+				achievement_entry = achievement_entry.replace("%rarity_pct%% of players", `only ${rarity-1} other player(s)!`);
+			}
+			else
+			{
+				achievement_entry = achievement_entry.replace("%rarity_pct%", rarity_pct.toString());
+			}
 			
 			if (v["event_and_date"] != "")
 			{
