@@ -87,22 +87,6 @@
 				<center><font size="5">Achievements</font></center>
 			</td>
 		</tr>
-		
-		<!-- <tr> -->
-			<!-- <td> -->
-				<!-- <div class="container"> -->
-					<!-- <img src="achievements/never_meet_your_heroes.png"> -->
-					<!-- <div class="centered">FOTOW VI- March 2019</div> -->
-				<!-- </div> -->
-			<!-- </td> -->
-		<!-- </tr> -->
-		<!-- <tr> -->
-			<!-- <td> -->
-				<!-- <div class="container"> -->
-					<!-- <img src="achievements/never_meet_your_heroes_incomplete.png"> -->
-				<!-- </div> -->
-			<!-- </td> -->
-		<!-- </tr> -->
 	</table>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -128,7 +112,7 @@
 				{ 
 					addRow(d, firstRow);
 					firstRow = "False";
-				});
+				}); 
 				
 				
 				document.getElementById("rankings_score").innerHTML = Math.round(data["gaussian_score"],1) + " (Rank " + data["gaussian_rank"] + ")";
@@ -149,25 +133,33 @@
 		function populateAchievementData(playerId)
 		{
 			var achievement_data = null;
-	
-			$.getJSON("data/achievement_data.json", function(json)
+			
+			$.getJSON("data/achievement_rarities.json", function(rjson)
 			{
-				let data = json[playerId];
-				achievement_data = json[playerId];
+				var rarities = rjson;
 				
-				for (const [ k, v ] of Object.entries(achievement_data))
+				$.getJSON("data/achievement_data.json", function(json)
 				{
-					addAchievement(k,v);
-				}
+					let data = json[playerId];
+					achievement_data = json[playerId];
+					
+					for (const [ k, v ] of Object.entries(achievement_data))
+					{
+						addAchievement(k,v,rarities[k]);
+					}
+				});
 			});
 		}
 		
-		function addAchievement(k, v)
+		function addAchievement(k, v, rarity)
 		{
 			if (k == "total_score") { return; }
 			
+			var rarity_pct = Math.round(rarity*100 / 3000);
+			if (rarity <= 0) rarity_pct = "<1";
+			
 			var achievement_table = document.getElementById("achievement_table");
-			var achievement_entry ='<tr><td><div class="container"><img src="achievements/%id%_incomplete.png"><div class="centered">%event_and_date%</div></div></td></tr>';
+			var achievement_entry =`<tr><td><div class='container' title="Achieved by ${rarity_pct}% of players"><img src="achievements/%id%_incomplete.png"><div class="centered">%event_and_date%</div></div></td></tr>`
 			achievement_entry = achievement_entry.replace("%event_and_date%", v["event_and_date"]);
 			achievement_entry = achievement_entry.replace("%id%", k);
 			
