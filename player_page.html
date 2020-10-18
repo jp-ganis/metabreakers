@@ -324,7 +324,7 @@
 			var event_year = document.getElementById('form_event_year').value;
 			var opponent_name = document.getElementById('form_opponent_name').value;
 
-			var outstring = {"ASTRING":achi_string, "EVENT_NAME":event_name, "EVENT_YEAR":event_year, "OPPONENT_NAME":opponent_name, "SUBMISSION_DATE":new Date()};
+			var outstring = `ACHI_ID=<<${achi_string}>as> EVENT_NAME=<<${event_name}>en> EVENT_DATE=<<${event_year}>ey> OPPONENT_NAME=<<${opponent_name}>on> SUBMISSION_DATE ${new Date()}`;
 			console.log(outstring);
 
 			$.ajax({
