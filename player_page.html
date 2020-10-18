@@ -86,6 +86,7 @@
 			<td colspan="10">
 				<center><font size="5">Achievements</font></center>
 				<center><font size="3"><i>(hover over achievement to see rarity)</i></font></center>
+				<center><font size="3"><i>(click the "I've Achieved This!" button to request an update)</i></font></center>
 			</td>
 		</tr>
 	</table>
@@ -264,7 +265,7 @@
 			var rarity_pct = Math.round(rarity*100 / 3000);
 			if (rarity <= 0) rarity_pct = "<1";
 			
-			button_html = '<button class="btn" onclick="onAchievementButtonClicked(&quot;%k%&quot;)">I\'ve completed this!</button>';
+			button_html = '<button class="btn" onclick="onAchievementButtonClicked(&quot;%k%&quot;)">I\'ve achieved this!</button>';
 			button_html = button_html.replace("%k%", k);
 			
 			var achievement_table = document.getElementById("achievement_table");
